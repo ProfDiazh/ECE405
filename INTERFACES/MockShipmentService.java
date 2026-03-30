@@ -8,7 +8,7 @@ public class MockShipmentService implements ShipmentSystem {
     status.add(id, "CREATED");
   }
 
-  public void updateStatus(String id, String newStatus){
+  public void updateShipmentStatus(String id, String newStatus){
     if(status.contains(id)) status.update(id, newStatus);
     
   }

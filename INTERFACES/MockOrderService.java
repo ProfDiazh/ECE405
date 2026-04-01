@@ -20,14 +20,16 @@ public class MockOrderService<T> implements OrderingServiceV2<T> {
     }
 
     /*
-        Randomly generate a new order ID that is not already in orders map
+        Randomly generate a new order integer ID that is not already in orders map
         @param: n/a
         @ret: int Id
     */
     public int generateID(){
+        // generate random int
         Random rand = new Random();
         int randInt = rand.nextInt(1000);
 
+        // if new new id already exists, generate new
         while(orders.containsKey(randInt)){
             randInt = rand.nextInt(1000);
         }
@@ -44,6 +46,7 @@ public class MockOrderService<T> implements OrderingServiceV2<T> {
     public int placeOrder(HashMap<String, Integer> order){
         int id = generateID();
 
+        // arraylist to hold order status and details
         ArrayList<Object> temp = new ArrayList<>();
         temp.add("PLACED");
         temp.add(order);
@@ -75,7 +78,7 @@ public class MockOrderService<T> implements OrderingServiceV2<T> {
     @Override
     public String orderStatus(Integer Id){
         if (orders.containsKey(Id)){
-            return (String) orders.get(Id).get(0);
+            return (String) orders.get(Id).get(0); // have to cast as a String, or else it is type Object
         }
         return null;
     }
@@ -88,7 +91,7 @@ public class MockOrderService<T> implements OrderingServiceV2<T> {
     @Override
     public HashMap<String, Integer> retrieveDetails(Integer Id){
         if (orders.containsKey(Id)){
-            return (HashMap<String, Integer>) orders.get(Id).get(1);
+            return (HashMap<String, Integer>) orders.get(Id).get(1); // have to cast as a HashMap, or else it is type Object
         }
         return null;
     }

@@ -6,6 +6,9 @@ public class MockOrderService<T> implements OrderingServiceV2<T> {
 
     HashMap <Integer, ArrayList<Object>> orders = new HashMap<>();
 
+    /*
+        Print out the complete orders architecture
+    */
     public String toString(){
         String res = "";
         for (Integer key : orders.keySet()){
@@ -33,7 +36,9 @@ public class MockOrderService<T> implements OrderingServiceV2<T> {
     }
 
     /*
-        Using a 
+        Given an order hashmap (item: quantity), create a new order and add to the orders hashmap
+        @param: HashMap<String, Integer> order
+        @return: int id (order id)
     */
     @Override
     public int placeOrder(HashMap<String, Integer> order){
@@ -48,6 +53,11 @@ public class MockOrderService<T> implements OrderingServiceV2<T> {
         return id;
     }
 
+    /*
+        Given the order id, cancel the order. Return true if canceled, else false.
+        @param: int id
+        @return: boolean
+    */
     @Override
     public boolean cancelOrder(Integer Id){
         if (orders.containsKey(Id)){
@@ -57,6 +67,11 @@ public class MockOrderService<T> implements OrderingServiceV2<T> {
         return false;
     }
 
+    /*
+        Return the order status (Placed/Canceled)
+        @param: Integer Id (order id)
+        @return: String
+    */
     @Override
     public String orderStatus(Integer Id){
         if (orders.containsKey(Id)){
@@ -65,6 +80,11 @@ public class MockOrderService<T> implements OrderingServiceV2<T> {
         return null;
     }
 
+    /*
+        Retrieve the order details (hashmap containing the order)
+        @param: Integer id
+        @return: HashMap<String, Integer>
+    */
     @Override
     public HashMap<String, Integer> retrieveDetails(Integer Id){
         if (orders.containsKey(Id)){

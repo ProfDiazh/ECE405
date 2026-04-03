@@ -1,9 +1,9 @@
-public class OnlineStoreApp { 
+public class OnlineStoreApp {
     public static void main(String[] args) { 
  
         InventoryService inventory = new MockInventoryService(); 
-        OrderService orderService = new MockOrderService(); 
-        ShipmentService shipmentService = new MockShipmentService(); 
+        OrderingServiceV2 orderService = new MockOrderService(); 
+        ShipmentSystem shipmentService = new MockShipmentService(); 
  
         // Step 1: Add product 
         inventory.addProduct(new Toy(“hot wheels”), 10); 
@@ -24,5 +24,5 @@ public class OnlineStoreApp {
         // Step 6: Track statuses 
         System.out.println("Order Status: " + orderService.getOrderStatus(orderId)); 
         System.out.println("Shipment Status: " + shipmentService.trackShipment(shipmentId)); 
-    } 
-} 
+    }
+}

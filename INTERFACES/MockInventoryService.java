@@ -1,12 +1,11 @@
 import java.util.*;
-
+package INTERFACES;
+import GenericClasses.Product;
 /**
  * Mock inventory service for testing.
  */
-public class MockInventoryService<T> implements InventoryService<T> {
+public class MockInventoryService<T extends product> implements InventoryService<T extends product> {
 
-    // orderId -> items in that order
-    private final Map<String, List<T>> orders = new HashMap<>();
 
     // current stock
     private final List<T> stock = new ArrayList<>();
@@ -14,12 +13,13 @@ public class MockInventoryService<T> implements InventoryService<T> {
     // inventory history snapshots
     private final List<List<T>> inventoryHistory = new ArrayList<>();
 
-    @Override
     public String generateFakeId() {
-        return "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        String random_id
+        random_id = "ORD123"
+        return random_id
+        
     }
 
-    @Override
     public List<String> simulateStatus(String orderId) {
         if (!orders.containsKey(orderId)) {
             return List.of("NOT_FOUND");
@@ -27,51 +27,42 @@ public class MockInventoryService<T> implements InventoryService<T> {
         return List.of("PLACED", "IN_TRANSIT");
     }
 
-    @Override
-    public T add(T item) {
-        stock.add(item);
+    public T addProduct(T item, int quantity) {
+        for (int i = 0; i < quantity; i++) {
+            stock.add(item);
+        }
         return item;
     }
-
-    @Override
-    public String createOrder(List<T> items) {
-        String orderId = generateFakeId();
-
-        for (T item : items) {
-            if (!stock.contains(item)) {
-                throw new IllegalArgumentException("Item not available in stock: " + item);
+    public List<T> removeProduct(T item, int quantity) {
+        List<T> removedItems = new ArrayList<>();
+        for (int i = 0; i < quantity; i++) {
+            if (stock.remove(item)) {
+                removedItems.add(item);
+            } else {
+                break; // No more items to remove
             }
         }
-
-        orders.put(orderId, new ArrayList<>(items));
-        return orderId;
+        return removedItems;
     }
 
-    @Override
-    public List<T> update(String orderId) {
-        List<T> orderItems = orders.remove(orderId);
-
-        if (orderItems == null) {
-            return Collections.emptyList();
+    public List<T> updateStock(T item , int quantity) {
+        if (quantity > 0){
+            return List.of(addProduct(item, quantity));
+        } else if (quantity < 0) {
+            return removeProduct(item, -quantity);
+        } else {
+            return List.of(); // No change
         }
-
-        stock.removeAll(orderItems);
-        inventoryHistory.add(new ArrayList<>(stock));
-
-        return orderItems;
     }
 
-    @Override
-    public boolean available(T item) {
+    public boolean checkStock(T item) {
         return stock.contains(item);
     }
 
-    @Override
     public List<List<T>> history() {
         return new ArrayList<>(inventoryHistory);
     }
 
-    @Override
     public List<T> getStock() {
         return new ArrayList<>(stock);
     }
